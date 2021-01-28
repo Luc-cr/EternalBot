@@ -1,0 +1,3 @@
+Las facciones son:
+
+Facción los_locos_de_la_pradera dueño: luc#9977. Integrantes: jimi, rober, luck
