@@ -1,7 +1,6 @@
 import io
 from discord.ext import commands
 import discord
-import subprocess as sp
 from discord.ext.commands import Bot
 
 intents = discord.Intents.default()
@@ -14,10 +13,9 @@ def field(parm1, parm2, parm3):
 
 @bot.command(pass_context=True)
 async def info(ctx, tipo):
-    #respuesta = os.system("tcping.exe 190.210.218.26 -p25565")
     if tipo == "minecraft":
         em1 = discord.Embed(title="Eternity craft come back", description="Un servidor de minecraft técnico", color= discord.Color.dark_gold())
-        field(em1, "IP", "190.210.218.26:::ERROR:::")
+        field(em1, "IP", "190.210.218.26:25565")
         em1.set_image(url='https://media.discordapp.net/attachments/666358207614156801/803389835419058237/Logo_Eternity_craft_Come_Back.JPG')
         await ctx.send(embed = em1)
         await ctx.send("Reglas del servidor: ",file=discord.File('Reglas_eternity.docx'))
@@ -37,7 +35,7 @@ async def info(ctx, tipo):
         em.set_image(url="https://cdn.discordapp.com/attachments/666358207614156801/803385275615019018/Eternal_BOT_logo.JPG")
         await ctx.send(embed=em)
     if tipo !="bot" and tipo!="discord" and tipo != "minecraft":
-        await ctx.send("Para ver la info del server de minecraft, discord o del bot, coloque el comando !info seguido de lo que quieres saber (minecraft/discord/bot)")
+        await ctx.send("Para ver la info del server de minecraft, discord o del bot, coloque el comando /info seguido de lo que quieres saber (minecraft/discord/bot)")
 @bot.command()
 async def rules(ctx):
     await ctx.send("```\n Reglas basicas: \n - No grifiar \n - No usar archivos externos al juego \n - No modificar parametros del juego. \n mas informacion en /info minecraft \n```")
@@ -63,28 +61,23 @@ async def createfacction(ctx, nombre,in2,in3,in4):
     dueño =ctx.message.author
     fac = open("fac.txt", "a")
     fac.write('\nFacción {} dueño: {}. Integrantes: {}, {}, {}'.format(nombre, dueño, in2,in3,in4))
+    rol = discord.utils.get(dueño.guild.roles, name=nombre)
     await bot.get_channel(803612218339885057).send("!una nueva faccion se unio a nuestro server¡ \n Nombre: {} \n Dueño:{}\n integrantes:{},{},{}".format(nombre, dueño, in2,in3,in4))
     await ctx.guild.create_voice_channel(name=nombre)
+    await dueño.add_roles(rol)
+    try:
+        await ctx.guild.get_member_named(in2).add_roles(rol)
+    except:
+        pass
+    try:
+        await ctx.guild.get_member_named(in3).add_roles(rol)
+    except:
+        pass
+    try:
+        await ctx.guild.get_member_named(in4).add_roles(rol)
+    except:
+        pass
     fac.close()
-@bot.command()
-async def joinfac(ctx, fac):
-    if fac !="owner" and fac!="Moderador" and fac !="Eternalbot" and fac!="Hydra":
-        #role =discord.utils.get(ctx.guild.roles, name=fac)
-        M = ctx.message.author
-        jfac = open("cache.txt", "a")
-        jfac.write("{} se unio a la faccion {}".format(M, fac))
-        jfac.close()
-        authid =ctx.message.author
-        await authid.add_roles(discord.utils.get(authid.guild.roles, name=fac))
-        await ctx.send("Te uniste a la facción: {}".format(fac))
-    else:
-        await ctx.send("JAJAJAJJA. ¿me ves cara de boludo? Que sea un bot no significa que este mal programado.")
-@bot.command()
-async def protocolo(ctx, num, contra):
-    if num == 945 and contra == "serverout":
-        bot.create_guild(name="Ataque al server general")
-    else:
-        await ctx.send("ERROR: NO LO VUELVA A INTENTAR O SERA BANEADO")
 
 @bot.command()
 async def report(ctx, nombre, reporte):
@@ -102,6 +95,13 @@ async def ruleacept(ctx, minname):
 @bot.event
 async def on_member_join(member):
     print("{} se a unido al servidor".format(member))
+    await member.add_roles(discord.utils.get(member.guild.roles, name="Jugador"))
+    await member.send("Hola, soy el bot de Eternity Craft y te voy a ayudar.\n Para empezar lo que debes hacer el leer estas reglas: ", file=discord.File('Reglas_eternity.docx'))
+    await member.send("Cuando las termines de leer debes aceptarlas usando el comando /ruleacept [nombre de minecraft], esto te permite que puedas acceder al server.")
+    await member.send("IMPORTANTE: el server de minecraft esta cerrado")
+    await member.send("Para mas informacion existe el canal de bots update en el cual luc#9977 menciona las funciones que tiene este bot. \n Gracias")
+    await bot.get_channel(804425234550620200).send("{} se unio a nuestro servidor.\n Disfruta de tu estadia.".format(member))
+    
 @bot.event
 async def on_member_remove(member):
     print("{} se a ido del servidor".format(member))
@@ -109,4 +109,4 @@ async def on_member_remove(member):
 @bot.event
 async def on_ready():
     print("El bot se inicio correctamente")
-bot.run('(WACHIN EL TOKEN ES SECRETO, NO TE LO PUEDO DAR Xd)')
+bot.run('ODAzMzMzNjg5OTQ0OTY1MTQ5.YA8QzA.Ig0OSt2jMPa1canmvdouo_50SZk')
