@@ -109,4 +109,4 @@ async def on_member_remove(member):
 @bot.event
 async def on_ready():
     print("El bot se inicio correctamente")
-bot.run('ODAzMzMzNjg5OTQ0OTY1MTQ5.YA8QzA.Ig0OSt2jMPa1canmvdouo_50SZk')
+bot.run([YourToken])
